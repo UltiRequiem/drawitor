@@ -1,14 +1,25 @@
 from PIL import Image, GifImagePlugin
 import io
 import os
+import sys
+import time
 
-from .utils import colored, PIXEL
+from .utils import colored, PIXEL, clear_console
 
 image_size = tuple[int, int]
 
 
 def draw_gif(source: GifImagePlugin.GifImageFile, size: image_size = None):
-    raise NotImplementedError("GIF drawing is not implemented yet")
+    try:
+        while True:
+            for frame in range(0, source.n_frames):
+                source.seek(frame)
+                draw_image(source, size)
+                time.sleep(0.1)
+                print(f"\033[{source.size[1]}A", end="")
+    except KeyboardInterrupt:
+        clear_console()
+        sys.exit()
 
 
 def draw_image(img: Image.Image, size: image_size = None):
@@ -44,7 +55,7 @@ def draw_image(img: Image.Image, size: image_size = None):
     buffer.truncate()
 
 
-def draw(source: str | Image.Image, size: image_size = (25, 20)):
+def draw(source: str | Image.Image, size: image_size = None):
     """
     Draws an image/GIF to the terminal.
     You can pass a path to an image or a PIL Image.
