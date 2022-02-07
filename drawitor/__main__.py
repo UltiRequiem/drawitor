@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from .core import draw_image
+from .core import draw
 
 drawitor = ArgumentParser(description="Draw Images or GIFs in your terminal")
 
@@ -7,4 +7,4 @@ drawitor.add_argument("image", type=str, help="Image to draw")
 
 args = drawitor.parse_args()
 
-draw_image(args.image)
+draw(args.image)

@@ -1,22 +1,29 @@
-from PIL import Image
+from PIL import Image, GifImagePlugin
 import io
 import os
 
 from .utils import colored, PIXEL
 
+image_size = tuple[int, int]
 
-def draw_image(path: str):
+
+def draw_gif(source: GifImagePlugin.GifImageFile, size: image_size = None):
+    raise NotImplementedError("GIF drawing is not implemented yet")
+
+
+def draw_image(img: Image.Image, size: image_size = None):
     buffer = io.StringIO()
-    img = Image.open(path)
+    size = size or os.get_terminal_size()
 
-    img = img.resize(os.get_terminal_size())
+    img = img.resize(size)
 
     pixel_values = img.convert("RGB").getdata()
 
-    width, _height = img.size
+    width, _ = img.size
+
+    cluster_pixel = pixel_values[0]
 
     n = 0
-    cluster_pixel = pixel_values[0]
 
     for index, pixel in enumerate(pixel_values):
         if pixel != cluster_pixel or index % width == 0:
@@ -35,3 +42,16 @@ def draw_image(path: str):
 
     buffer.seek(0)
     buffer.truncate()
+
+
+def draw(source: str | Image.Image, size: image_size = (25, 20)):
+    """
+    Draws an image/GIF to the terminal.
+    You can pass a path to an image or a PIL Image.
+    """
+
+    image = Image.open(source) if isinstance(source, str) else source
+
+    drawer = draw_gif if isinstance(image, GifImagePlugin.GifImageFile) else draw_image
+
+    drawer(image, size)

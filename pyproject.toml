@@ -3,6 +3,11 @@ name = "drawitor"
 version = "0.1.0"
 description = "Draw Images or GIFs in your terminal."
 authors = ["Eliaz Bobadilla <eliaz.bobadilladev@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/UltiRequiem/drawitor"
+repository = "https://github.com/UltiRequiem/drawitor"
+keywords = ["commands", "utilities", "cli"]
+include = ["licence"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
