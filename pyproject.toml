@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "drawitor"
-version = "0.1.0"
+version = "0.1.1"
 description = "Draw Images or GIFs in your terminal."
 authors = ["Eliaz Bobadilla <eliaz.bobadilladev@gmail.com>"]
 readme = "README.md"
