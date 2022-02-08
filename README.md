@@ -2,6 +2,8 @@
 
 Draw Images/GIFs in your terminal.
 
+https://user-images.githubusercontent.com/71897736/152903149-295ad507-1e2c-4a92-81a6-d5f184e32eba.mp4
+
 ## Install
 
 ```sh
