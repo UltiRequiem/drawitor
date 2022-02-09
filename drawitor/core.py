@@ -8,8 +8,12 @@ from .utils import colored, PIXEL, clear_console
 
 image_size = tuple[int, int]
 
+terminal_size = os.get_terminal_size()
 
-def draw_gif(source: GifImagePlugin.GifImageFile, size: image_size = None):
+default_size = (int(terminal_size.columns / 4), int(terminal_size.lines / 4))
+
+
+def draw_gif(source: GifImagePlugin.GifImageFile, size: image_size = terminal_size):
     try:
         while True:
             for frame in range(0, source.n_frames):
@@ -22,9 +26,8 @@ def draw_gif(source: GifImagePlugin.GifImageFile, size: image_size = None):
         sys.exit()
 
 
-def draw_image(img: Image.Image, size: image_size = None):
+def draw_image(img: Image.Image, size: image_size = default_size):
     buffer = io.StringIO()
-    size = size or os.get_terminal_size()
 
     img = img.resize(size)
 
@@ -32,17 +35,20 @@ def draw_image(img: Image.Image, size: image_size = None):
 
     width, _ = img.size
 
-    cluster_pixel = pixel_values[0]
+    cluster_pixel: tuple[int, int, int] = pixel_values[0]
 
     n = 0
 
     for index, pixel in enumerate(pixel_values):
         if pixel != cluster_pixel or index % width == 0:
             buffer.write(colored(*cluster_pixel, PIXEL * n))
+
             if index and index % width == 0:
                 buffer.write("\n")
+
             n = 0
             cluster_pixel = pixel
+
         n += 1
 
     buffer.write(colored(*cluster_pixel, PIXEL * n) + "\033[0m")
@@ -65,4 +71,4 @@ def draw(source: str | Image.Image, size: image_size = None):
 
     drawer = draw_gif if isinstance(image, GifImagePlugin.GifImageFile) else draw_image
 
-    drawer(image, size)
+    drawer(image, size) if size else drawer(image)
